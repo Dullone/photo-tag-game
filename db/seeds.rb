@@ -5,3 +5,32 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+photo1 = GamePhoto.create(
+    name: "photo.jpg",
+  )
+
+photo1.characterTags.create(
+    coordX: 200,
+    coordY: 200,
+    character: "Test"
+  )
+photo1.highScores.create(
+    name: "Tester",
+    score: 300
+  )
+
+photo1.highScores.create(
+    name: "Tester2",
+    score: 420
+  )
+
+photo1.highScores.create(
+    name: "Tester",
+    score: 280
+  )
+
+photo1.highScores.create(
+    name: "Failer",
+    score: 3980
+  )

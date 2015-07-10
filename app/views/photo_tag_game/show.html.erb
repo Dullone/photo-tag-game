@@ -1,6 +1,16 @@
-<div class="game">
-  <%= image_tag @photo, id: "photo_tag_game_img" %>
-  <div id="guess-box"></div>
-  <div id="guesses">guess 1<br/>guess 2</div>
+<div class="container">
+
+  <div class="game">
+    <%= image_tag @photo_name, id: "photo_tag_game_img", data: 
+                              { characters: @characters } %>
+    <div id="guess-box"></div>
+    <div id="guesses">guess 1<br/>guess 2</div>
+  </div>
+
+  <div id="high-scores">
+      <div id="timer">Time: 00:00</div>
+      <h3>High Scores:</h3>
+        <%= render partial: '/high_score/high_score', collection: @highScores %>
+    </div>
 </div>
-<div id="timer">Time: 0</div>
+

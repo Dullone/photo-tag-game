@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  gamephoto_id: 
+  name: MyString
+  score: 1
+
+two:
+  gamephoto_id: 
+  name: MyString
+  score: 1

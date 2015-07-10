@@ -15,7 +15,10 @@
  */
 *{
   box-sizing: border-box;
+  margin: 0px;
 }
+
+/* Photo Game */
 #guess-box{
   border: 2px solid;
   border-color: #FFFF00;
@@ -38,4 +41,24 @@
 
 .game{
   position: relative;
+  display: inline-block;
+}
+
+#high-scores{
+  float: left;
+  margin: 10px;
+}
+#timer{
+ padding: 10px 0;
+ font-size: 20px;
+}
+
+.name, .score{
+  float: left;
+  width: 4em;
+  line-height: 140%;
+}
+
+.score{
+  text-align: right;
 }

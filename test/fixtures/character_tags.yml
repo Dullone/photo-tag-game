@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  gamePhoto_id: 
+  character: MyString
+  coordX: 1
+  coordY: 1
+
+two:
+  gamePhoto_id: 
+  character: MyString
+  coordX: 1
+  coordY: 1
