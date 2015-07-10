@@ -22,35 +22,61 @@ var photo_tag_game = (function () {
   var guessBoxHeight;
   var $guessBox;
   var $guesses;
+  var characters;
   var guessBoxPadding = 4;
   var guessesPadding  = 6;
   var time            = 0;
+  var currentX;
+  var currentY;
+  var sessionKey;
+
+  var timerCallback;
+  var removeBoxTimer;
+
+  var feedbacktoS = {
+    "true": "Correct!",
+    "false": "Incorrect",
+  }
 
   var init = function() {
 
     $photo = $("#photo_tag_game_img");
 
     if($photo.length) {
-
       $guessBox       = $("#guess-box");
       $guesses        = $("#guesses");
       $timer          = $("#timer");
+      $guessFeedback  = $("#guess-feedback");
+      characters      = $photo.data("characters");
       guessBoxWidth   = $guessBox.width();
       guessBoxHeight  = $guessBox.height();
+      sessionKey      = $photo.data("key");
+
+      populateGuessCharacters();
 
       $('body').click(onClickBody);
       $photo.click(onClickPhoto);
       $guesses.click(onClickGuesses);
+      $("#guesses a").click(makeGuess);
 
-      setTimeout(updateTimer, 1000);
+      timerCallback = setTimeout(updateTimer, 1000);
 
     }
+  };
+
+  var populateGuessCharacters = function() {
+    html_string = "";
+    for(var idx in characters){
+      html_string += '<div><a id="guess-' + characters[idx] + '" href="#">' +
+                                         characters[idx] +    '</a></div>';
+    }
+    $guesses.append(html_string);
   };
 
   var updateTimer = function() {
     ++time;
     $timer.text("Time: " + time.toString().toHHMMSS());
-    setTimeout(updateTimer, 1000);
+    timerCallback = setTimeout(updateTimer, 1000);
   };
 
   var onClickGuesses = function(event) {
@@ -67,14 +93,17 @@ var photo_tag_game = (function () {
   };
 
   var onClickPhoto = function(event) {
+    clearTimeout(removeBoxTimer); //stop from removing guess box after inteval
     event.stopPropagation()
     event.preventDefault();
+    console.log(event)
+    currentX = event.offsetX;
+    currentY = event.offsetY;
     showGuessBox(event);
     showGuesses(event);
   };
 
   var showGuesses = function(event_args) {
-    console.log(event_args)
     var offsetX = event_args.offsetX + $guessBox.width()/2 + guessBoxPadding;
     var offsetY = event_args.offsetY;
     
@@ -96,6 +125,65 @@ var photo_tag_game = (function () {
     });
     $guessBox.css('visibility', 'visible');
     $guesses.css('visibility', 'visible');
+  };
+
+  var makeGuess = function(event) {
+    var character = idToCharacter(this.id)
+    console.log(sessionKey)
+    $.ajax({
+      url: "guess",
+      data: {
+        character: character,
+        x: currentX,
+        y: currentY,
+        photo: $photo.data("photo-name"),
+        key: sessionKey,
+      },
+      dataType: 'json',
+      success: guessFeedback,
+    })
+  };
+
+  var guessFeedback = function(response) {
+    var color = "#CC0000";
+    
+    console.log(response)
+    if(response.feedback === false) {
+      $guessFeedback.css('color', color);
+    } else {
+      color = "#00CC00";
+      $guessFeedback.css('color', color);
+      removeCorrectAnswer(response.character);
+      removeBoxTimer = setTimeout(removeGuessBox, 1500);
+    }
+
+    $guessFeedback.html('<h1>' + feedbacktoS[response.feedback] + '</h1> guess: ' + 
+                                                    response.character);
+    $guessFeedback.effect("highlight", {}, 1500);
+    $guesses.effect("highlight", { color: color }, 1500);
+
+    if(response.wonGame){
+      gameWon();
+    }
+  };
+
+  var gameWon = function() {
+    clearTimeout(timerCallback);
+    //remove click handlers
+    $guesses.html('<h1>You won!</h1>Time: ' + time);
+    $guessFeedback.html('<h1>You won!</h1>Time: ' + time);
+  };
+
+  var removeCorrectAnswer = function(character) {
+    $('#' + characterToID(character)).remove();
+  };
+
+  var idToCharacter = function(id) {
+    return id.substr(id.indexOf("-") + 1);
+  };
+
+  var characterToID = function(character) {
+    return 'guess-' + character;
   };
 
   return {

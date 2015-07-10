@@ -44,8 +44,10 @@
   display: inline-block;
 }
 
-#high-scores{
+#status{
   float: left;
+}
+#high-scores{
   margin: 10px;
 }
 #timer{
@@ -53,10 +55,23 @@
  font-size: 20px;
 }
 
+#guess-feedback{
+  float: left;
+  padding: 15px 0;
+  width: 100%;
+  text-align: center;
+}
+
 .name, .score{
   float: left;
   width: 4em;
   line-height: 140%;
+}
+
+#guesses a{
+  text-decoration: none;
+  font-weight: bold;
+  color: #B2F0FF;
 }
 
 .score{

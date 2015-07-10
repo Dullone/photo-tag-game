@@ -11,10 +11,21 @@ photo1 = GamePhoto.create(
   )
 
 photo1.characterTags.create(
-    coordX: 200,
-    coordY: 200,
-    character: "Test"
+    coordX: 77,
+    coordY: 46,
+    character: "Pedal"
   )
+photo1.characterTags.create(
+    coordX: 341,
+    coordY: 451,
+    character: "Bow"
+  )
+photo1.characterTags.create(
+    coordX: 159,
+    coordY: 511,
+    character: "Clasp"
+  )
+
 photo1.highScores.create(
     name: "Tester",
     score: 300
