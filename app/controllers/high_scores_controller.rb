@@ -3,7 +3,9 @@ class HighScoresController < ApplicationController
   
   def index
     respond_to do |format|
-      render json: GamePhoto.find(params[:photo]).highScores.limit(5);
+      #format.json { render json:
+        #GamePhoto.where(name: params[:photo]).highScores.limit(5)  
+      #}
     end
   end
 
@@ -14,9 +16,9 @@ class HighScoresController < ApplicationController
         photo.highScores.create(name:  params[:high_score][:name], 
                                 score: session[:gameTime])
 
-        format.json { render json:  message: "Score posted"  }      
+        format.json { render json:  {message: "Score posted"}  }      
       else
-        format.json { render json:  message: "Error."  }
+        format.json { render json:  {message: "Error."}  }
       end
     end
   end

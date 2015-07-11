@@ -47,6 +47,7 @@ var photo_tag_game = (function () {
       $guesses        = $("#guesses");
       $timer          = $("#timer");
       $guessFeedback  = $("#guess-feedback");
+      $legend         = $('#characters-legend');
       characters      = $photo.data("characters");
       guessBoxWidth   = $guessBox.width();
       guessBoxHeight  = $guessBox.height();
@@ -58,6 +59,8 @@ var photo_tag_game = (function () {
       $photo.click(onClickPhoto);
       $guesses.click(onClickGuesses);
       $("#guesses a").click(makeGuess);
+      $('#high-score-form').on('ajax:success', highScorePosted
+                          ).on('ajax:error',   highScoreRefused);
 
       timerCallback = setTimeout(updateTimer, 1000);
 
@@ -71,6 +74,8 @@ var photo_tag_game = (function () {
                                          characters[idx] +    '</a></div>';
     }
     $guesses.append(html_string);
+    $legend.append(html_string.replace(/guess-/g, "legend-")
+      .replace(/<a/g, '<strong').replace(/\/a>/g, '/strong>'));
   };
 
   var updateTimer = function() {
@@ -96,7 +101,6 @@ var photo_tag_game = (function () {
     clearTimeout(removeBoxTimer); //stop from removing guess box after inteval
     event.stopPropagation()
     event.preventDefault();
-    console.log(event)
     currentX = event.offsetX;
     currentY = event.offsetY;
     showGuessBox(event);
@@ -129,7 +133,6 @@ var photo_tag_game = (function () {
 
   var makeGuess = function(event) {
     var character = idToCharacter(this.id)
-    console.log(sessionKey)
     $.ajax({
       url: "guess",
       data: {
@@ -147,7 +150,6 @@ var photo_tag_game = (function () {
   var guessFeedback = function(response) {
     var color = "#CC0000";
     
-    console.log(response)
     if(response.feedback === false) {
       $guessFeedback.css('color', color);
     } else {
@@ -170,20 +172,36 @@ var photo_tag_game = (function () {
   var gameWon = function() {
     clearTimeout(timerCallback);
     //remove click handlers
-    $guesses.html('<h1>You won!</h1>Time: ' + time);
-    $guessFeedback.html('<h1>You won!</h1>Time: ' + time);
+    won_message = '<h1>You won!</h1>Time: ' + time.toString().toHHMMSS()
+    $guesses.html(won_message);
+    $guessFeedback.html(won_message);
+
+    $("#high-score-form").css('visibility', 'visible').effect(
+                          "highlight", {} , 1500);
+
   };
 
   var removeCorrectAnswer = function(character) {
     $('#' + characterToID(character)).remove();
+    $('#' + characterToID(character, 'legend-')).addClass("found");
   };
 
   var idToCharacter = function(id) {
     return id.substr(id.indexOf("-") + 1);
   };
 
-  var characterToID = function(character) {
-    return 'guess-' + character;
+  var characterToID = function(character, prefix) {
+    prefix = prefix || 'guess-'
+    return prefix + character;
+  };
+
+  var highScorePosted = function() {
+    $('#high-score-form').empty();
+    $('#high-score-form').html("<h2>Score sent</h2>")
+  };
+
+  var highScoreRefused = function() {
+    $('#high-score-form').append("Something went wrong.")
   };
 
   return {

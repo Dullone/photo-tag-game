@@ -16,6 +16,11 @@
       <%= render partial: '/high_score/high_score', collection: @highScores %>
     </div>
     <div id="guess-feedback"><h2>No Guesses</h2></div>
+    <div id="characters-legend"><h1>Find</h1></div>
+  </div>
+  <div id="high-score-form">
+    <h3>You won!  Please enter your name to register your score.</h3>
+    <%= render partial: "./shared/high_score_form", object: @highScore, as: 'highScore' %>
   </div>
 </div>
 

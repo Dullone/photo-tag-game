@@ -13,12 +13,27 @@ module PhotoTagGameHelper
     session[:id] ||= SecureRandom.base64
   end
 
+  def startGame(photo)
+    session[:gameStartedAt] = Time.now
+    session[:photo]         = photo
+  end
+
+  def endGame
+    session[:gameTime] = Time.now - Time.parse(session[:gameStartedAt])
+  end
+
   def correctCharacterGuess(name)
-    session[:characters].delete(name)
+    session[:characters].delete(name) if session[:characters]
   end
 
   def wonGame?
-    return session[:characters].length == 0
+    return session[:characters] ? session[:characters].length == 0 : false
+  end
+
+  def resetGame
+    session[:characters] = nil
+    session[:gameStartedAt] = nil
+    session[:photo] = nil
   end
 
   def remainingCharacters
