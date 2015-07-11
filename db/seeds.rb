@@ -13,17 +13,29 @@ photo1 = GamePhoto.create(
 photo1.characterTags.create(
     coordX: 77,
     coordY: 46,
-    character: "Pedal"
+    character: "Largest_falling_Pedal"
   )
 photo1.characterTags.create(
     coordX: 341,
     coordY: 451,
-    character: "Bow"
+    character: "Scroll_Bow"
   )
 photo1.characterTags.create(
     coordX: 159,
     coordY: 511,
     character: "Clasp"
+  )
+
+photo1.characterTags.create(
+    coordX: 310,
+    coordY: 304,
+    character: "Tie_clamp"
+  )
+
+photo1.characterTags.create(
+    coordX: 640,
+    coordY: 573,
+    character: "Flower_stigma"
   )
 
 photo1.highScores.create(
