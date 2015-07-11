@@ -38,6 +38,9 @@ var photo_tag_game = (function () {
     "false": "Incorrect",
   }
 
+  var waitingDiv  = '<div id="waiting">Checking...</div>';
+  var errorDiv    = '<div id="guessError">Server error<br/>Guess not checked</div>';
+
   var init = function() {
 
     $photo = $("#photo_tag_game_img");
@@ -62,6 +65,7 @@ var photo_tag_game = (function () {
       $('#high-score-form').on('ajax:success', highScorePosted
                           ).on('ajax:error',   highScoreRefused);
 
+
       timerCallback = setTimeout(updateTimer, 1000);
 
     }
@@ -70,8 +74,8 @@ var photo_tag_game = (function () {
   var populateGuessCharacters = function() {
     var html_string = "";
     for(var idx in characters){
-      html_string += '<div><a id="guess-' + characters[idx] + '" href="#">' +
-                                         characters[idx] +    '</a></div>';
+      html_string += '<div><a id="guess-' + characters[idx] + 
+                              '" href="#">' + characters[idx] +    '</a></div>';
     }
     $guesses.append(html_string);
     $legend.append(html_string.replace(/guess-/g, "legend-")
@@ -144,7 +148,29 @@ var photo_tag_game = (function () {
       },
       dataType: 'json',
       success: guessFeedback,
+      error: makeGuessError,
+      beforeSend: ajaxWaiting,
+      complete: ajaxFinishedWaiting,
     })
+
+  };
+
+  var ajaxWaiting = function() {
+    $guesses.append(waitingDiv);
+  };
+
+  var ajaxFinishedWaiting = function() {
+    $("#waiting").remove()
+  };
+
+  var makeGuessError = function() {
+    console.log("error")
+    $guesses.append(errorDiv);
+    setTimeout(clearGuessError, 3000)
+  };
+
+  var clearGuessError = function() {
+    $("#guessError").remove()
   };
 
   var guessFeedback = function(response) {
