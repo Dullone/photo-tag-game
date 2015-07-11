@@ -1,4 +1,4 @@
 <%= form_for highScore, id: "high-score-form", remote: true do |f|%>
-  <%= f.text_field :name %>
+  <%= f.text_field :name, maxlength: 10 %>
   <%= f.submit "submit score" %>
 <% end %>

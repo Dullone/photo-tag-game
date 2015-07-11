@@ -68,7 +68,7 @@ var photo_tag_game = (function () {
   };
 
   var populateGuessCharacters = function() {
-    html_string = "";
+    var html_string = "";
     for(var idx in characters){
       html_string += '<div><a id="guess-' + characters[idx] + '" href="#">' +
                                          characters[idx] +    '</a></div>';
@@ -195,13 +195,40 @@ var photo_tag_game = (function () {
     return prefix + character;
   };
 
-  var highScorePosted = function() {
+  var highScorePosted = function(response) {
     $('#high-score-form').empty();
     $('#high-score-form').html("<h2>Score sent</h2>")
+    getHighScores();
   };
 
   var highScoreRefused = function() {
     $('#high-score-form').append("Something went wrong.")
+  };
+
+  var getHighScores = function() {
+    $.ajax({
+      url: "high_scores",
+      type: "get",
+      data: {
+        photo: $photo.data("photo-name"),
+      },
+      dataType: 'json',
+      success: updateHighScores,
+    })
+
+  };
+
+  var updateHighScores = function(response) {
+    var html_string = "";
+    console.log(response);
+    for(var idx in response) {
+      html_string += "<div>"
+      html_string += '<div class="name">'  + response[idx].name  + '</div>'
+      html_string += '<div class="score">' + 
+                      response[idx].score.toString().toHHMMSS() + '</div>'
+      html_string += "</div>"
+    }
+    $('#score-container').html(html_string).effect("highlight", {} , 1500);
   };
 
   return {

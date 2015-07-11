@@ -13,13 +13,15 @@
     <div id="high-scores">
       <div id="timer">Time: 00:00</div>
       <h3>High Scores:</h3>
-      <%= render partial: '/high_score/high_score', collection: @highScores %>
+      <div id="score-container">
+        <%= render partial: '/high_score/high_score', collection: @highScores %>
+      </div>
     </div>
     <div id="guess-feedback"><h2>No Guesses</h2></div>
     <div id="characters-legend"><h1>Find</h1></div>
   </div>
   <div id="high-score-form">
-    <h3>You won!  Please enter your name to register your score.</h3>
+    <h3>You won!  Please enter your name to register your score. (max: 10 characters)</h3>
     <%= render partial: "./shared/high_score_form", object: @highScore, as: 'highScore' %>
   </div>
 </div>
