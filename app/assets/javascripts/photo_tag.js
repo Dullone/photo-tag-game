@@ -75,7 +75,7 @@ var photo_tag_game = (function () {
     var html_string = "";
     for(var idx in characters){
       html_string += '<div><a id="guess-' + characters[idx] + 
-                              '" href="#">' + characters[idx] +    '</a></div>';
+               '" href="#">' + characters[idx].replace(/_/g, " ") +  '</a></div>';
     }
     $guesses.append(html_string);
     $legend.append(html_string.replace(/guess-/g, "legend-")
@@ -107,6 +107,7 @@ var photo_tag_game = (function () {
     event.preventDefault();
     currentX = event.offsetX;
     currentY = event.offsetY;
+    console.log(currentX + ", " +  currentY);
     showGuessBox(event);
     showGuesses(event);
   };
@@ -185,7 +186,7 @@ var photo_tag_game = (function () {
       removeBoxTimer = setTimeout(removeGuessBox, 1500);
     }
 
-    $guessFeedback.html('<h1>' + feedbacktoS[response.feedback] + '</h1> guess: ' + 
+    $guessFeedback.html('<h1>' + feedbacktoS[response.feedback] + '</h1>' + 
                                                     response.character);
     $guessFeedback.effect("highlight", {}, 1500);
     $guesses.effect("highlight", { color: color }, 1500);
