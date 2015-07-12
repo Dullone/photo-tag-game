@@ -1,5 +1,8 @@
 #Photo-tag game
 
+Online at https://mighty-lowlands-8083.herokuapp.com/
+Could take awhile upon first page load to wake server.
+
 Rails, javascript and jquery
 
     Find all the items listed under Find.  After you succeed
