@@ -8,16 +8,10 @@ class HighScoresController < ApplicationController
   end
 
   def create
-    respond_to do |format|
-      if session[:gameTime] && wonGame?
-        photo = GamePhoto.where(name:  session[:photo]).first
-        photo.highScores.create(name:  params[:high_score][:name], 
-                                score: session[:gameTime])
-
-        format.json { render json:  message: "Score posted"  }      
-      else
-        format.json { render json:  message: "Error."  }
-      end
+    if session[:gameTime] && wonGame?
+      photo = GamePhoto.where(name:  session[:photo]).first
+      photo.highScores.create(name:  params[:high_score][:name], 
+                              score: session[:gameTime])      
     end
   end
 
