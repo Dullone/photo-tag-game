@@ -11,6 +11,12 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
 
+development:
+  <<: *default
+  database: photogame
+  username: odin
+  password: 1ya197d
+  host: localhost
 
 #development:
 #  <<: *default

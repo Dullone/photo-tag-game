@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150710160224) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "character_tags", force: :cascade do |t|
     t.integer  "game_photo_id"
     t.string   "character"
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 20150710160224) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "character_tags", ["game_photo_id"], name: "index_character_tags_on_game_photo_id"
+  add_index "character_tags", ["game_photo_id"], name: "index_character_tags_on_game_photo_id", using: :btree
 
   create_table "game_photos", force: :cascade do |t|
     t.string   "name"
@@ -30,7 +33,7 @@ ActiveRecord::Schema.define(version: 20150710160224) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "game_photos", ["name"], name: "index_game_photos_on_name"
+  add_index "game_photos", ["name"], name: "index_game_photos_on_name", using: :btree
 
   create_table "high_scores", force: :cascade do |t|
     t.integer  "game_photo_id"
@@ -40,6 +43,8 @@ ActiveRecord::Schema.define(version: 20150710160224) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "high_scores", ["game_photo_id"], name: "index_high_scores_on_game_photo_id"
+  add_index "high_scores", ["game_photo_id"], name: "index_high_scores_on_game_photo_id", using: :btree
 
+  add_foreign_key "character_tags", "game_photos"
+  add_foreign_key "high_scores", "game_photos"
 end
